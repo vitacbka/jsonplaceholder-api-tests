@@ -1,16 +1,24 @@
 package test;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import models.Post;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
+
+@Epic("JSON Placeholder API")
+@Feature("Posts Operations")
 public class JsonPlaceHolderApiTests extends BaseTest {
 
     @Test
-    void testGetPostByIdTest() {
+    @Story("Get Post")
+    @DisplayName("Get /posts/1 - get id post")
+    void getPostByIdTest() {
         given()
                 .spec(requestSpec)
                 .when()
@@ -24,7 +32,9 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
-    public void testGetAllPostTest() {
+    @Story("Get all posts")
+    @DisplayName("Get /posts - get all posts")
+    public void getAllPostTest() {
         given()
                 .spec(requestSpec)
                 .when()
@@ -35,7 +45,9 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
-    public void testCreatePost() {
+    @Story("Create post")
+    @DisplayName("POST /posts - create new post")
+    public void createPostTest() {
         Post newPost = Post.builder()
                 .title("foo")
                 .body("bar")
@@ -55,7 +67,9 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
-    public void testUpdatePost() {
+    @Story("Update post")
+    @DisplayName("PUT /posts/1 - full update post")
+    public void updatePostTest() {
         Post updatedPost = Post.builder()
                 .id(1)
                 .title("updated title")
@@ -75,6 +89,8 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
+    @Story("Patch post")
+    @DisplayName("PATCH /posts/1 - partial update post")
     void patchPostTest() {
         given()
                 .spec(requestSpec)
@@ -86,6 +102,22 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
+    @Story("Delete Post")
+    @DisplayName("DELETE /posts/1 — удаление поста")
+    public void deletePostTest() {
+        given()
+                .spec(requestSpec)
+                .when()
+                .delete("/posts/1")
+                .then()
+                .statusCode(200)
+                .body(is("{}"));
+    }
+
+
+    @Test
+    @Story("Filter post")
+    @DisplayName("GET /posts?userId=1 - filter post by userId")
         public void filterPostsByUserIdTest() {
             given()
                     .spec(requestSpec)
@@ -99,6 +131,8 @@ public class JsonPlaceHolderApiTests extends BaseTest {
     }
 
     @Test
+    @Story("Get comments")
+    @DisplayName("GET /posts/1/comments - get comments for post")
     void getCommentsForPostTest() {
         given()
                 .spec(requestSpec)
